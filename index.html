@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHS TECH · Desenvolvimento de Software & Jogos Mobile</title>
+  <meta name="description" content="A CHS TECH é uma empresa de tecnologia especializada no desenvolvimento de softwares, aplicativos multiplataforma e jogos mobile casuais e envolventes.">
+  <meta name="author" content="CHS CONSULTORIA LTDA">
+  <meta name="theme-color" content="#0a0d1a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2226%22 fill=%22%2306B6D4%22/><text y=%2268%22 x=%2250%22 font-family=%22system-ui,sans-serif%22 font-weight=%22900%22 font-size=%2254%22 text-anchor=%22middle%22 fill=%22%230A0D1A%22>C</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #070913;
+      --bg-card: #0e1224;
+      --bg-card-hover: #141a33;
+      --border-card: rgba(255, 255, 255, 0.08);
+      --border-card-hover: rgba(6, 182, 212, 0.4);
+      --primary: #06b6d4;
+      --primary-glow: rgba(6, 182, 212, 0.25);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Background Glows */
+    .bg-ambient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ambient-glow-1 {
+      position: absolute;
+      top: -10%;
+      left: 20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      top: 30%;
+      right: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header & Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 9, 19, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-card);
+    }
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .logo-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: #070913;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+    .brand-text {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .brand-text span {
+      background: linear-gradient(135deg, var(--primary) 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+    .nav-btn {
+      padding: 9px 20px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 90px 0 70px;
+      text-align: center;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--primary);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-title span.grad {
+      background: linear-gradient(135deg, #f8fafc 30%, var(--primary) 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-primary {
+      padding: 14px 30px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, #0284c7 100%);
+      color: #050811;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 20px var(--primary-glow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--primary-glow);
+    }
+    .btn-secondary {
+      padding: 14px 28px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Pillars Strip */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 50px 0 90px;
+    }
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 26px 24px;
+      transition: all 0.25s ease;
+    }
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-card-hover);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .pillar-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .pillar-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+    .pillar-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Section Headers */
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 50px;
+    }
+
+    /* Featured Project Showcase: CapiBlocks */
+    .showcase {
+      margin-bottom: 100px;
+    }
+    .project-card {
+      background: linear-gradient(180deg, #10152e 0%, #0a0d1e 100%);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+    .project-visual {
+      background: #080b18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .project-banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover .project-banner-img {
+      transform: scale(1.02);
+    }
+    .project-content {
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .project-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .p-badge {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .badge-primary { background: rgba(6, 182, 212, 0.18); color: var(--primary); }
+    .badge-gold    { background: rgba(250, 204, 21, 0.18); color: #facc15; }
+    .badge-purple  { background: rgba(168, 85, 247, 0.18); color: #c084fc; }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .project-app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+    .project-name {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .project-description {
+      font-size: 15.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+    .project-features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .project-features li {
+      font-size: 14px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .project-features li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 900;
+    }
+    .project-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* Services / Solutions */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 100px;
+    }
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 36px;
+      transition: all 0.25s ease;
+    }
+    .service-card:hover {
+      border-color: var(--border-card-hover);
+      transform: translateY(-3px);
+    }
+    .service-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .service-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .service-text {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Corporate Identity & Compliance (Stores requirement) */
+    .corporate-box {
+      background: linear-gradient(180deg, #0e1224 0%, #080b18 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 48px;
+      margin-bottom: 100px;
+    }
+    .corporate-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+    }
+    .corp-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: #f8fafc;
+    }
+    .corp-lead {
+      color: var(--text-muted);
+      font-size: 15.5px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .corp-details {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .corp-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .corp-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.8px;
+    }
+    .corp-value {
+      font-size: 15.5px;
+      color: #f8fafc;
+      font-weight: 600;
+    }
+    .corp-link {
+      color: var(--primary);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .corp-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background: #04060c;
+      border-top: 1px solid var(--border-card);
+      padding: 48px 0 36px;
+    }
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer-sub {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    .footer-bottom {
+      padding-top: 24px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-title { font-size: 42px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-visual { height: 260px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .corporate-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="bg-ambient">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-bar">
+      <a href="#" class="brand-logo">
+        <div class="logo-badge">C</div>
+        <div class="brand-text">CHS <span>TECH</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#solucoes">Soluções</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#sobre">Institucional</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <a href="mailto:chs.consultoria@outlook.com" class="nav-btn">Falar com a Equipe</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-pill">
+        <span>⚡</span> Engenharia de Software & Jogos Digitais
+      </div>
+      <h1 class="hero-title">
+        Criamos tecnologias que conectam, <span class="grad">encantam e transformam</span>.
+      </h1>
+      <p class="hero-subtitle">
+        A <strong>CHS TECH</strong> é a marca de tecnologia e desenvolvimento de software da <strong>CHS CONSULTORIA LTDA</strong>. Desenvolvemos aplicativos móveis de alta performance, jogos interativos para iOS e Android e arquiteturas digitais robustas.
+      </p>
+      <div class="hero-actions">
+        <a href="#projetos" class="btn-primary">Explorar Nossos Jogos</a>
+        <a href="#sobre" class="btn-secondary">Sobre a Empresa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars -->
+  <div class="container">
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <span class="pillar-icon">📱</span>
+        <h3 class="pillar-title">100% Nativo & Multiplataforma</h3>
+        <p class="pillar-desc">
+          Desenvolvimento moderno com Flutter, Dart, Swift e Kotlin, garantindo fluidez a 60/120 FPS em qualquer dispositivo móvel ou navegador.
+        </p>
+      </div>
+      <div class="pillar-card">
+        <span class="pillar-icon">🔒</span>
+        <h3 class="pillar-title">Privacidade por Design</h3>
+        <p class="pillar-desc">
+          Soluções arquitetadas com foco em dados locais (offline-first), sem coleta invasiva e em estrita conformidade com LGPD e GDPR.
+        </p>
+      </div>
+      <div class="pillar-card">
+        <span class="pillar-icon">🎮</span>
+        <h3 class="pillar-title">Engajamento & Experiência</h3>
+        <p class="pillar-desc">
+          Mecânicas acessíveis, design lúdico, microinterações recompensadoras e direção artística autoral em cada experiência produzida.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Project (Showcase CapiBlocks) -->
+  <section id="projetos" class="showcase">
+    <div class="container">
+      <h2 class="section-title">Projeto em Destaque</h2>
+      <p class="section-subtitle">
+        Conheça a mais recente criação do nosso estúdio de jogos digitais.
+      </p>
+
+      <div class="project-card">
+        <div class="project-visual">
+          <img src="assets/capiblocks-banner.png" alt="CapiBlocks Banner Oficial" class="project-banner-img">
+        </div>
+        <div class="project-content">
+          <div class="project-badges">
+            <span class="p-badge badge-primary">Jogo Casual</span>
+            <span class="p-badge badge-gold">Google Play Store</span>
+            <span class="p-badge badge-purple">WebAssembly</span>
+          </div>
+
+          <div class="project-header">
+            <img src="assets/capiblocks-icon.png" alt="Ícone CapiBlocks" class="project-app-icon">
+            <div>
+              <h3 class="project-name">CapiBlocks</h3>
+              <p style="color: var(--primary); font-size: 14px; font-weight: 600;">O Quebra-Cabeça da Capivara</p>
+            </div>
+          </div>
+
+          <p class="project-description">
+            Um jogo envolvente de blocos onde estratégia e fofura se encontram. Encaixe peças no tabuleiro, faça combos espetaculares, salve filhotes de capivara e reconstrua a Ilha do Capi em múltiplos modos de desafio.
+          </p>
+
+          <ul class="project-features">
+            <li>Modo Clássico com Combos</li>
+            <li>Modo Obra em Planta Azul</li>
+            <li>Torre 2.5D de Equilíbrio</li>
+            <li>Blitz 60s & Duelos 1v1</li>
+            <li>Resgate de Filhotes Fofos</li>
+            <li>100% Offline & Sem Cadastro</li>
+          </ul>
+
+          <div class="project-cta-group">
+            <a href="https://capiblocks.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary">
+              Jogar Versão Web ↗
+            </a>
+            <a href="https://capiblocks.vercel.app/privacidade/" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              Política de Privacidade
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions & Services -->
+  <section id="solucoes" class="container">
+    <h2 class="section-title">Nossas Especialidades</h2>
+    <p class="section-subtitle">
+      Tecnologia de ponta a serviço de experiências digitais sólidas e escaláveis.
+    </p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon-box">📲</div>
+        <h3 class="service-title">Aplicativos Móveis (iOS & Android)</h3>
+        <p class="service-text">
+          Concepção, arquitetura e publicação de aplicativos nativos e híbridos nas principais lojas de aplicativos (Google Play Store e Apple App Store), com design system exclusivo e alta retenção.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-box">🧩</div>
+        <h3 class="service-title">Desenvolvimento de Jogos</h3>
+        <p class="service-text">
+          Criação de jogos casuais e casuais-médios com motores eficientes (Flame, WebGL, Flutter), física calculada, trilha sonora imersiva e monetização ética (sem anúncios invasivos).
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-box">☁️</div>
+        <h3 class="service-title">Consultoria & Arquitetura Cloud</h3>
+        <p class="service-text">
+          Auditoria e modernização de esteiras de software, integração com bancos relacionais, pipelines automatizados de CI/CD (GitHub Actions) e automações corporativas de alta disponibilidade.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-box">🛡️</div>
+        <h3 class="service-title">Segurança & Conformidade de Dados</h3>
+        <p class="service-text">
+          Adequação rigorosa a diretrizes da Apple (App Store Review Guidelines) e Google (Play Policy), formulação de políticas de privacidade transparentes e conformidade total com LGPD.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corporate Information (Transparency for Google & Apple) -->
+  <section id="sobre" class="container">
+    <div class="corporate-box">
+      <div class="corporate-grid">
+        <div>
+          <h2 class="corp-title">Informações Institucionais</h2>
+          <p class="corp-lead">
+            A <strong>CHS TECH</strong> é a unidade de tecnologia e desenvolvimento de produtos digitais operada pela <strong>CHS CONSULTORIA LTDA</strong>, sediada no Brasil e dedicada à criação de soluções de software e entretenimento digital com excelência técnica.
+          </p>
+          <p class="corp-lead">
+            Atuamos em conformidade com as melhores práticas internacionais de desenvolvimento, garantindo segurança, estabilidade e suporte contínuo para todos os usuários de nossos aplicativos.
+          </p>
+        </div>
+
+        <div class="corp-details" id="contato">
+          <div class="corp-item">
+            <span class="corp-label">Razão Social Oficial</span>
+            <span class="corp-value">CHS CONSULTORIA LTDA</span>
+          </div>
+
+          <div class="corp-item">
+            <span class="corp-label">Marca Tecnológica</span>
+            <span class="corp-value">CHS TECH</span>
+          </div>
+
+          <div class="corp-item">
+            <span class="corp-label">E-mail de Contato & Suporte Geral</span>
+            <span class="corp-value">
+              <a href="mailto:chs.consultoria@outlook.com" class="corp-link">chs.consultoria@outlook.com</a>
+            </span>
+          </div>
+
+          <div class="corp-item">
+            <span class="corp-label">Suporte de Aplicativos na Google Play / App Store</span>
+            <span class="corp-value">
+              <a href="mailto:chs.consultoria@outlook.com" class="corp-link">chs.consultoria@outlook.com</a>
+            </span>
+          </div>
+
+          <div class="corp-item">
+            <span class="corp-label">País de Origem</span>
+            <span class="corp-value">Brasil 🇧🇷</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="brand-text" style="font-size: 18px;">CHS <span>TECH</span></div>
+          <p class="footer-sub">Desenvolvimento de Software e Jogos Digitais</p>
+        </div>
+        <div class="footer-links">
+          <a href="#solucoes">Soluções</a>
+          <a href="#projetos">Projetos</a>
+          <a href="https://capiblocks.vercel.app/privacidade/" target="_blank" rel="noopener noreferrer">Privacidade CapiBlocks</a>
+          <a href="mailto:chs.consultoria@outlook.com">Contato</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 CHS TECH · Operado por <strong>CHS CONSULTORIA LTDA</strong>. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
